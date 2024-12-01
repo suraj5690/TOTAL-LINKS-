@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Links Collection</title>
+  <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #3b8d99, #6b7dff);
+      color: #2d3436;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #ffffff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+    .container:hover {
+      transform: scale(1.02);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      color: #2d3436;
+    }
+    .search-bar {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .search-bar input {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-size: 1rem;
+    }
+    .search-bar button {
+      padding: 12px;
+      background-color: #6b7dff;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    .search-bar button:hover {
+      background-color: #5b6ec5;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    li {
+      background: #f9f9f9;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    }
+    a {
+      text-decoration: none;
+      color: #6b7dff;
+      font-weight: bold;
+      font-size: 1.1rem;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    button.delete-btn {
+      background: #d63031;
+      border: none;
+      color: #fff;
+      padding: 5px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button.delete-btn:hover {
+      background: #e17055;
+    }
+    .add-link {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    input[type="text"] {
+      width: 80%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 12px 18px;
+      background: #6b7dff;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    button:hover {
+      background: #5b6ec5;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #636e72;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Links Collection</h1>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search for a link...">
+      <button onclick="searchLinks()">Search</button>
+    </div>
+
+    <!-- Link List -->
+    <ul id="link-list">
+      <!-- Dynamically added links will appear here -->
+    </ul>
+
+    <!-- Add New Link -->
+    <div class="add-link">
+      <input type="text" id="new-link" placeholder="Paste your link here">
+      <button onclick="addLink()">Add Link</button>
+    </div>
+
+    <div class="footer">Designed by Trending fashion deals & Team</div>
+  </div>
+
+  <script>
+    const linkList = document.getElementById('link-list');
+    const searchInput = document.getElementById('search-input');
+    let links = [];
+
+    // Add new link function
+    function addLink() {
+      const linkInput = document.getElementById('new-link');
+      const linkValue = linkInput.value.trim();
+
+      if (linkValue) {
+        const linkObj = { url: linkValue, id: Date.now() };
+        links.push(linkObj);
+        renderLinks();
+        linkInput.value = '';
+      } else {
+        alert('Please enter a valid link!');
+      }
+    }
+
+    // Render all links
+    function renderLinks(filter = '') {
+      linkList.innerHTML = '';
+      const filteredLinks = links.filter(link =>
+        link.url.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      filteredLinks.forEach(link => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <a href="${link.url}" target="_blank">${link.url}</a>
+          <button class="delete-btn" onclick="deleteLink(${link.id})">Delete</button>
+        `;
+        linkList.appendChild(li);
+      });
+    }
+
+    // Delete link function
+    function deleteLink(id) {
+      links = links.filter(link => link.id !== id);
+      renderLinks();
+    }
+
+    // Search links
+    function searchLinks() {
+      const filter = searchInput.value.trim();
+      renderLinks(filter);
+    }
+  </script>
+</body>
+</html>
